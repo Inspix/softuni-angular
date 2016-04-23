@@ -1,1 +1,1 @@
-softuni-angular
+AngularProject
