@@ -2,10 +2,10 @@ angular.module('issueTracker.users',[])
     .config(['$routeProvider', function($routeProvider){
             $routeProvider
             .when('/login',{
-                templateUrl: 'js/controllers/login/login.html'
+                templateUrl: 'templates/login.html'
             })
             .when('/register',{
-                templateUrl: 'js/controllers/login/login.html'
+                templateUrl: 'templates/login.html'
             });
     }])
     .controller('loginController',['$scope','$location',function($scope,$location){

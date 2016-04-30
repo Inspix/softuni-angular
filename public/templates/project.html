@@ -1,0 +1,16 @@
+<div ng-controller="projectController">
+    <h1>{{title}}</h1>
+    <p>{{projectId}}</p>
+    <br>
+    <section>
+        {{description}}    
+    </section>    
+    <hr>
+    <section class="issues">
+        <div class="issue" ng-repeat="issue in issues">
+            <h3>{{issue.title}}</h3>
+            <p>{{issue.description}}</p>
+            <a ng-href="{{issue.link}}">Go to Issue</a>
+        </div>
+    </section>
+</div>
