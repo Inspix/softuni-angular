@@ -9,13 +9,18 @@
     <meta name="author" content="">
 
     <title>Issue tracker - SoftUni Project</title>
-
+    
+    <!-- Normalize CSS -->
+    <link rel="stylesheet" href="css/normalize.css">
+    
     <!-- Bootstrap Core CSS -->
     <link href="/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Custom CSS -->
     <link href="css/grayscale.css" rel="stylesheet">
     <link href="css/common.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    
 
     <!-- Custom Fonts -->
     <link href="css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -111,7 +116,7 @@
     </header>
 
 
-    <div ng-view></div>
+    <div class="container" ng-view></div>
     <!-- About Section -->
     <section id="about" class="container content-section text-center">
         <div class="row">
