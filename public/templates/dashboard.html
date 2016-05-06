@@ -1,0 +1,24 @@
+<div class="row">
+    <div class="text-center col-xs-12">
+        <h1>Welcome {{user}}</h3>
+    </div>
+</div>
+<div class="row text-center">
+    <div id='userProjects' class="col-lg-5">
+        <div class="list-group">
+            <a ng-repeat="project in projects" ng-href="{{project.link}}" class="row list-group-item">
+                <h4 class="list-group-item-heading">{{project.name}}</h4>
+                <span class="list-group-item-text">{{project.description}}</span>
+            </a>
+        </div>
+    </div>
+    <div id="userIssues" class="col-lg-5 col-lg-offset-1">
+        <div class="list-group">
+            <a ng-repeat="issue in issues" ng-href="{{issue.link}}" class="row list-group-item">
+                <h4 class="list-group-item-heading">{{issue.name}}</h4>
+                <span class="list-group-item-text col-lg-6">{{issue.project}}</span>
+                <span class="list-group-item-text col-lg-6">{{issue.dueDate}}</span>
+            </a>
+        </div>
+    </div>
+</div>

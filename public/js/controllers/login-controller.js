@@ -1,22 +1,16 @@
 angular.module('issueTracker.users',[])
     .config(['$routeProvider', function($routeProvider){
             $routeProvider
-            .when('/login',{
+            .when('/',{
                 templateUrl: 'templates/login.html'
             })
-            .when('/register',{
-                templateUrl: 'templates/login.html'
-            });
     }])
     .controller('loginController',['$scope','$location',function($scope,$location){
-        var path = $location.path();
-        var shouldRegister = path != '/login';
-        
-        var login = function(){
+        $scope.login = function(){
             alert('funzies');
         };
         
-        var register = function(){
+        $scope.register = function(){
             alert('funzies squared');
         };
         
@@ -25,7 +19,4 @@ angular.module('issueTracker.users',[])
         }
         
         $scope.onChange = onChange;
-        $scope.register = shouldRegister;
-        $scope.buttonText = path.substr(1);
-        $scope.buttonAction = shouldRegister ? register : login;
     }]);
