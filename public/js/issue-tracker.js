@@ -6,6 +6,7 @@ angular.module('issueTracker',[
     'issueTracker.dashboard',
     'issueTracker.auth'
     ])
-    .config(['$routeProvider', function($routeProvider){
-            $routeProvider.otherwise({ redirectTo: '/'})
+    .config(['$routeProvider','$httpProvider', function($routeProvider,$httpProvider){
+        $httpProvider.defaults.headers.post = {};
+        $routeProvider.otherwise({ redirectTo: '/'});
     }]);

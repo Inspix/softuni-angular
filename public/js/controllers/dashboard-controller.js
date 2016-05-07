@@ -3,19 +3,20 @@ angular.module('issueTracker.dashboard', [])
             $routeProvider
             .when('/dashboard',{
                 resolve : {
-                    auth : function (auth){
-                    console.log('resolve called');
-                    console.log(auth);
-                    return auth.GetLoggedIn();
+                    authenticated : function (auth){
+                        return auth.GetLoggedIn();
                     }
                 },
                 templateUrl: 'templates/dashboard.html',
                 controller: 'dashboardController'
             })
     }])
-    .controller('dashboardController',['$scope','auth',function($scope,auth){
-        console.log('logged in' + auth)
+    .controller('dashboardController',['$scope','authenticated','auth',function($scope,authenticated,auth){
         $scope.user = "Pesho";
+        $scope.getUsers = function(){
+            auth.GetUsers();
+        }
+        
         $scope.projects = [
             {
                 name: "Project 1",
@@ -53,5 +54,7 @@ angular.module('issueTracker.dashboard', [])
                 dueDate : new Date(),
                 link: "#"
             }
-        ]
+        ];
+        
+        
     }]);

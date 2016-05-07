@@ -5,13 +5,20 @@ angular.module('issueTracker.users',[])
                 templateUrl: 'templates/login.html'
             })
     }])
-    .controller('loginController',['$scope','$location',function($scope,$location){
-        $scope.login = function(){
-            alert('funzies');
+    .run(['$location', 'auth',function($location, auth){
+        if(auth.GetLoggedIn()){
+            $location.path('/dashboard');
+        };
+    }])
+    .controller('loginController',['$scope','auth',function($scope,auth){
+        
+        
+        $scope.login = function(user){
+            $scope.token = auth.LogIn(user.email,user.password);
         };
         
-        $scope.register = function(){
-            alert('funzies squared');
+        $scope.register = function(user){
+            auth.Register(user.email, user.password, user.cPassword);
         };
         
         function onChange(){
