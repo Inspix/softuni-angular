@@ -3,19 +3,37 @@ angular.module('issueTracker.dashboard', [])
             $routeProvider
             .when('/dashboard',{
                 resolve : {
-                    authenticated : function (auth){
-                        return auth.GetLoggedIn();
+                    authenticated : function ($location, auth){
+                        var result = auth.GetLoggedIn();
+                        if(result){
+                            return true;
+                        }else{
+                            $location.path('/')
+                            return false; 
+                        }
+                    },
+                    me : function(auth){
+                        return auth.GetMe().then(function(response){
+                            return response.data;
+                        });
                     }
                 },
                 templateUrl: 'templates/dashboard.html',
                 controller: 'dashboardController'
             })
     }])
-    .controller('dashboardController',['$scope','authenticated','auth',function($scope,authenticated,auth){
-        $scope.user = "Pesho";
-        $scope.getUsers = function(){
-            auth.GetUsers();
+    .controller('dashboardController',['$scope','$location','authenticated','me','auth','appUser',function($scope,$location, authenticated, me, auth, appUser){
+        $scope.showUserInfo = true;
+        $scope.userInfo = me;
+        $scope.userInfo.isAdmin = $scope.userInfo.isAdmin ? 'Yes' : 'No';
+        
+        $scope.logOut = function() {
+            auth.Logout().then(function(data){
+                $location.path('#/');
+            });
         }
+        $scope.user = appUser.userName;
+        $scope.authenticated = appUser.logged;
         
         $scope.projects = [
             {

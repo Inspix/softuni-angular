@@ -1,6 +1,7 @@
 angular.module('issueTracker.project',[])
     .config(['$routeProvider', function($routeProvider){
         $routeProvider.when('/project/:id',{
+            
             templateUrl:'templates/project.html',
             controller:'projectController'
         })

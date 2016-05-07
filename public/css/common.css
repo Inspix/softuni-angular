@@ -1,3 +1,7 @@
+body {
+    margin-top: 250px;
+}
+
 .bg-green {
     background-color: #31cb92;
 }
@@ -52,6 +56,24 @@
     color: black;
     border-bottom-left-radius: 10px;
     border-bottom-right-radius: 10px;
+}
+
+#buttonMenu {
+    display: block;
+    position: fixed;
+    left: -110px;
+    top: 100px;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+#buttonMenu#tick {
+    display: block;
+    position: relative;
+    left: 5px;
+}
+
+#buttonMenu:hover {
+    left:0px;
 }
 
 @media (max-width: 480px) {
