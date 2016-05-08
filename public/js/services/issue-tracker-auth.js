@@ -38,6 +38,7 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
             return REST.logout().then(function(result){
                 $cookies.remove('auth-token');
                 $cookies.remove('me');
+                appUser.authString = '';
                 appUser.me = undefined;
                 return result.data;
             });

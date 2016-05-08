@@ -29,10 +29,14 @@ angular.module("issueTracker.issues",[])
               console.log(result);
            });
            
+            $scope.goBack = function(){
+                window.history.back();
+            };
+            
             $scope.logOut = function() {
                 auth.Logout().then(function(response){
                     $location.path('#/');
                 });
-            }   
-       } 
+            }
+       }
     ]);
