@@ -3,6 +3,7 @@ angular.module('issueTracker',[
     'ngAnimate', 
     'issueTracker.users',
     'issueTracker.issues',
+    'issueTracker.profile',
     'issueTracker.project',
     'issueTracker.project.all',
     'issueTracker.dashboard',

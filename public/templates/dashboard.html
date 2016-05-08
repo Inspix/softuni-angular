@@ -5,12 +5,12 @@
                 Profile
             </button>
         </div>
-        <div class="btn-group">
+        <div ng-show="showAdminButtons" class="btn-group">
             <a href="#/Projects" class="btn btn-success btn-lg bg-green" type="button" ng-click="goToProjects()">
                 All Projects
             </a>
         </div>
-        <div class="btn-group">
+        <div ng-show="showAdminButtons" class="btn-group">
             <button class="btn btn-success btn-lg bg-green" type="button" ng-click="open('lg')">
                 Add Project
             </button>
@@ -36,6 +36,9 @@
                 <span class="list-group-item-text">{{userInfo.isAdmin}}</span>
             </a>
         </div>
+        <a href='#/profile/changepassword' class="btn btn-default">
+            Change Password
+        </a>
     </div>
 </div>
 <div class="row">

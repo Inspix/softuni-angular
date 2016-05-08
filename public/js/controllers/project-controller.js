@@ -48,9 +48,14 @@ angular.module('issueTracker.project',[])
                 $location.path($location.path() + '/edit');
             }
             $scope.logOut = function() {
-                auth.Logout();
+                auth.Logout().then(function(response){
+                    $location.path('#/');
+                });
             }   
             
+            $scope.goBack = function(){
+                window.history.back();
+            };
             $scope.issues = [
                 {
                     title:'Title 1',
@@ -180,7 +185,9 @@ angular.module('issueTracker.project',[])
             };
             
             $scope.logOut = function() {
-                auth.Logout();
-            };
+                auth.Logout().then(function(response){
+                    $location.path('#/');
+            });
+        }   
         }
     ]);

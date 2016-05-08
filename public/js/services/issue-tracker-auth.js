@@ -7,12 +7,16 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
         
         function GetLoggedin(){
             var token = $cookies.getObject('auth-token');
+            var me = $cookies.getObject('me');
             if(token){
                 appUser.userName = token.userName;
                 var expirationDate = new Date(token['.expires']);
                 appUser.authString = 'Bearer ' + token.access_token;
                 appUser.logged = token != undefined && expirationDate > new Date();
                 appUser.expires = expirationDate;
+            }
+            if(me){
+                appUser.me = me;
             }
             return token != undefined && appUser.logged;
         }
@@ -22,6 +26,7 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
             .then(function(response){
                 var token = response.data;
                 $cookies.putObject('auth-token',token);
+                
             });
         }
         
@@ -34,7 +39,6 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
                 $cookies.remove('auth-token');
                 $cookies.remove('me');
                 appUser.me = undefined;
-                $location.path('#/');
                 return result.data;
             });
         }
@@ -77,6 +81,10 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
             return REST.getIssues(id);
         }
         
+        function ChangePassword(data){
+            return REST.changePassword(data);
+        }
+        
         return {
             GetLoggedIn : GetLoggedin,
             LogIn : LogIn,
@@ -88,7 +96,8 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
             GetAllProjects : GetAllProjects,
             GetUserProjects: GetUserProjects,
             EditProject: EditProject,
-            GetIssue : GetIssue
+            GetIssue : GetIssue,
+            ChangePassword: ChangePassword
         }
     }]);
     

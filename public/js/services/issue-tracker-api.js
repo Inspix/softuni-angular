@@ -55,8 +55,10 @@ angular.module("issueTracker.api", [
                 var parameters = {
                     method:'POST',
                     url: 'api/Account/ChangePassword',
+                    data: userData,
                     headers : {
-                        'Authorization': appUser.authString
+                        'Authorization': appUser.authString,
+                        'Content-Type': 'application/json'
                     }
                 };
                 return Execute(parameters);

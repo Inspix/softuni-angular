@@ -12,41 +12,59 @@ angular.module('issueTracker.dashboard', [])
                             return $q.reject('Not Authenticated'); 
                         }
                     },
-                    projects: function($q, auth, appUser){
+                    me : function($q, auth){
                         var deferred = $q.defer();
                         
-                        
-                        auth.GetUserProjects().then(function(response){
-                            console.log(response);
+                        auth.GetMe().then(function(response){
                             deferred.resolve(response.data);
                         },function(error){
-                            deferred.reject(error);
-                        })
+                            deferred.reject(error.data);
+                        });
                         
                         return deferred.promise;
-                    }
+                    },
+                    projects: function($q, $interval, auth, appUser){ 
+                        var deferred = $q.defer(); 
+                        var interval = $interval(function(){
+                            if(appUser.me){
+                                $interval.cancel(interval);
+                                auth.GetUserProjects().then(function(response){ 
+                                    console.log(response); 
+                                    deferred.resolve(response.data); 
+                                },function(error){ 
+                                    deferred.reject(error.data); 
+                                }) 
+                            }
+                        },100);
+                        
+                        return deferred.promise; 
+                    } 
                 },
                 templateUrl: 'templates/dashboard.html',
                 controller: 'dashboardController'
             })
     }])
-    .controller('dashboardController',['$scope','$location','auth','appUser','projects',function($scope,$location, auth, appUser, projects){
-        $scope.showUserInfo = true;
-        $scope.userInfo = appUser.me;
+    .controller('dashboardController',['$scope','$location','auth','appUser','projects',function($scope,$location, auth, appUser,projects){
         if(!appUser.me){
             auth.GetMe().then(function(response){
                 $scope.userInfo = appUser.me;
                 $scope.showAdminButtons = appUser.me.isAdmin;
             });
+        }else{
+            $scope.userInfo = appUser.me;
+            $scope.showAdminButtons = appUser.me.isAdmin;
         }
         
+        $scope.showUserInfo = false;
+
         $scope.logOut = function() {
-            auth.Logout();
-        }
+            auth.Logout().then(function(response){
+                $location.path('#/');
+            });
+        }   
         
         $scope.user = appUser.userName;
         $scope.projects = projects.Projects;
-        
         
         $scope.issues = [
             {

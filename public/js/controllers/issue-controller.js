@@ -14,7 +14,8 @@ angular.module("issueTracker.issues",[])
            auth.GetIssue($routeParams.id).then(function(result){
                console.log(result);
               $scope.issue = result.data;
-              $scope.canResolve = result.data.Status.Id != 1;
+              $scope.canResolve = result.data.Status.Id !== 'Closed';
+              console.log(result);
            });
        } 
     ]);

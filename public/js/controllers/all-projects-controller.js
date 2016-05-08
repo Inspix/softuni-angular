@@ -2,16 +2,19 @@ angular.module('issueTracker.project.all',[])
     .config(['$routeProvider', function($routeProvider){
         var resolves = {
             authenticated : function ($q, $location, auth, appUser){
+                var deferred = $q.defer();
+                
                 var result = auth.GetLoggedIn();
                 console.log('resolve');
                 if(result && appUser.me && appUser.me.isAdmin){
                     console.log('success');
-                    return $q.when(true);
+                    deferred.resolve(true);
                 }else{
                     console.log('failsed');
-                    $location.path('/')
-                    return $q.reject('Not Authenticated'); 
+                    $location.path('#/')
+                    deferred.reject('not authenticated'); 
                 }
+                return deferred.promise;
             }
         };
         
@@ -45,8 +48,10 @@ angular.module('issueTracker.project.all',[])
             };
             
             $scope.logOut = function() {
-                auth.Logout();
-            }   
+                auth.Logout().then(function(response){
+                    $location.path('#/');
+            });
+        }      
             
            
         }
