@@ -2,14 +2,7 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
     .config(['$httpProvider',function($httpProvider){
          $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=utf-8';
     }])
-    .value('appUser', {
-        userName: undefined,
-        logged: undefined,
-        expires: undefined,
-        isAdmin: undefined,
-        authString : '0',
-        logging : true
-    })
+    
     .factory("auth",["$http","$cookies",'$location',"REST",'appUser',function($http,$cookies,$location,REST,appUser){
         
         function GetLoggedin(){
@@ -27,9 +20,8 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
         function LogIn(email,password){
             return REST.login("Username=" + email + '&Password=' + password + '&grant_type=password')
             .then(function(response){
-               var token = response.data;
-               $cookies.putObject('auth-token',token);
-               return token;
+                var token = response.data;
+                $cookies.putObject('auth-token',token);
             });
         }
         
@@ -40,6 +32,9 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
         function LogOut(){
             return REST.logout().then(function(result){
                 $cookies.remove('auth-token');
+                $cookies.remove('me');
+                appUser.me = undefined;
+                $location.path('#/');
                 return result.data;
             });
         }
@@ -54,11 +49,32 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
         }
         
         function GetProject(id){
-            return REST.getProject({id:id});
+            return REST.getProjects({id:id});
+        }
+        
+        function GetUserProjects(){
+            var filter = '?pageSize=' + 10 + '&pageNumber=' + 1 + '&filter=Lead.id == "' + appUser.me.Id + '"';
+            return REST.getUserProjects(filter);
+        }
+        
+        function GetAllProjects(){
+            return REST.getAllProjects();
         }
         
         function GetMe(){
-            return REST.me();
+            return REST.me().then(function(response){
+                $cookies.putObject('me',response.data);
+                appUser.me = response.data;
+                return response;
+            });
+        }
+        
+        function EditProject(data,id){
+            return REST.editProject(data,id);
+        }
+        
+        function GetIssue(id){
+            return REST.getIssues(id);
         }
         
         return {
@@ -67,7 +83,12 @@ angular.module('issueTracker.auth',['issueTracker.api','ngCookies'])
             Logout : LogOut,
             Register : Register,
             GetUsers : gUsers,
-            GetMe : GetMe
+            GetMe : GetMe,
+            GetProject: GetProject,
+            GetAllProjects : GetAllProjects,
+            GetUserProjects: GetUserProjects,
+            EditProject: EditProject,
+            GetIssue : GetIssue
         }
     }]);
     

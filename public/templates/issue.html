@@ -1,15 +1,29 @@
 <div class="text-center row">
     <div id="issue" class="issue col-lg-offset-1 col-lg-10 col-md-6 col-md-offset-3 col-xs-12" ng-controller="issueController">
-        <h1 class="bg-green">{{title}} 
+        <div>
+            <h3>Author</h3>
+            <h1 class="bg-green">{{issue.Author.Username}} 
+                <br>
+                <small>{{issue.Author.Id}}</small>
+            </h1>
+        </div>
+        <h3>Assignee</h3>
+        <h1 class="bg-gray">{{issue.Assignee.Username}} 
             <br>
-            <small>{{issueId}}</small>
+            <small>{{issue.Assignee.Id}}</small>
         </h1>
         <div class="issue-description bg-gray">
-            <p>{{description}}</p>
+            <h4>Description</h4>
+            <p>{{issue.Description}}</p>
+            <small>Due Date</small>
+            <p>{{issue.DueDate}}</p>
         </div>
+        <div>
+            <h3>{{issue.Status.Name}}</h3>
+        </div>        
         <div class="btn-group btn-group-justified">
              <div class="btn-group">
-                <button class="btn btn-success btn-lg bg-green" type="button">
+                <button ng-disable="canResolve" class="btn btn-success btn-lg bg-green" type="button">
                     Resolve
                 </button>
             </div>

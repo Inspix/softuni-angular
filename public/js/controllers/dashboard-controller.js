@@ -3,55 +3,50 @@ angular.module('issueTracker.dashboard', [])
             $routeProvider
             .when('/dashboard',{
                 resolve : {
-                    authenticated : function ($location, auth){
+                    authenticated : function ($q, $location, auth){
                         var result = auth.GetLoggedIn();
                         if(result){
-                            return true;
+                            return $q.when(true);
                         }else{
                             $location.path('/')
-                            return false; 
+                            return $q.reject('Not Authenticated'); 
                         }
                     },
-                    me : function(auth){
-                        return auth.GetMe().then(function(response){
-                            return response.data;
-                        });
+                    projects: function($q, auth, appUser){
+                        var deferred = $q.defer();
+                        
+                        
+                        auth.GetUserProjects().then(function(response){
+                            console.log(response);
+                            deferred.resolve(response.data);
+                        },function(error){
+                            deferred.reject(error);
+                        })
+                        
+                        return deferred.promise;
                     }
                 },
                 templateUrl: 'templates/dashboard.html',
                 controller: 'dashboardController'
             })
     }])
-    .controller('dashboardController',['$scope','$location','authenticated','me','auth','appUser',function($scope,$location, authenticated, me, auth, appUser){
+    .controller('dashboardController',['$scope','$location','auth','appUser','projects',function($scope,$location, auth, appUser, projects){
         $scope.showUserInfo = true;
-        $scope.userInfo = me;
-        $scope.userInfo.isAdmin = $scope.userInfo.isAdmin ? 'Yes' : 'No';
-        
-        $scope.logOut = function() {
-            auth.Logout().then(function(data){
-                $location.path('#/');
+        $scope.userInfo = appUser.me;
+        if(!appUser.me){
+            auth.GetMe().then(function(response){
+                $scope.userInfo = appUser.me;
+                $scope.showAdminButtons = appUser.me.isAdmin;
             });
         }
-        $scope.user = appUser.userName;
-        $scope.authenticated = appUser.logged;
         
-        $scope.projects = [
-            {
-                name: "Project 1",
-                description : "Description 1",
-                link: "#"
-            },
-            {
-                name: "Project 2",
-                description : "Description 2",
-                link: "#"
-            },
-            {
-                name: "Project 3",
-                description : "Description 3",
-                link: "#"
-            }
-        ];
+        $scope.logOut = function() {
+            auth.Logout();
+        }
+        
+        $scope.user = appUser.userName;
+        $scope.projects = projects.Projects;
+        
         
         $scope.issues = [
             {
@@ -73,6 +68,5 @@ angular.module('issueTracker.dashboard', [])
                 link: "#"
             }
         ];
-        
         
     }]);

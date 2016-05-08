@@ -1,0 +1,77 @@
+<aside ng-show="show" id="buttonMenu">
+    <div class="btn-group btn-group-vertical">
+        <div class="btn-group">
+            <button class="btn btn-success btn-lg" type="button" ng-click='goBack();'>
+                Back
+            </button>
+        </div>
+        <div class="btn-group">
+            <button class="btn btn-danger btn-lg" type="button" ng-click='logOut();'>
+                LogOut
+            </button>
+        </div>
+    </div>
+    <span id="tick">></span>
+</aside>
+<div ng-show="show" class="text-center row">
+    <div class="project col-lg-offset-1 col-lg-10 col-md-6 col-md-offset-3 col-xs-12" ng-controller="projectController">
+        <div id="projectEditForm">
+            <h2 class="text-center">Edit Project</h2>
+            <form name='editForm' ng-submit="edit(data);" class="form-horizontal" novalidate>
+                <div class="form-group" ng-class="{ 'has-error' : editForm.name.$invalid && !editForm.name.$pristine}">
+                    <label for="projectName">Project Name</label>
+                    <input name="name" type="text" class="form-control" id="projectName" ng-model="data.Name" ng-required="true">
+                    <p ng-show="editForm.name.$dirty && editForm.name.$error.required" class="help-block">Project Name Required</p>
+                </div>
+                <hr>
+                <div class="form-group" ng-class="{ 'has-error' : editForm.description.$invalid && !editForm.description.$pristine}">
+                    <label for="description">Description</label>
+                    <input name="description" type="text" class="form-control" id="description" ng-model="data.Description" ng-required="true">
+                    <p ng-show="editForm.description.$dirty && editForm.description.$invalid.required" class="help-block">Description Required</p>
+                </div>
+                <hr>
+                <div class="form-group" ng-class="{ 'has-error' : editForm.labelText.$invalid && !editForm.labelText.$pristine}">
+                    <h3>Labels</h3>
+                    <p ng-show="data.LabelNames.length <= 0">No Labels</p>
+                    <ul>
+                        <li ng-repeat='label in data.LabelNames'>
+                            {{label.Name}}
+                        </li>
+                    </ul>
+                    <p ng-show="existingLabel != ''" class="help-block">{{existingLabel}}</p>
+                    <input name="labelText" type="text" class="form-control" id="labelText" ng-model="data.label" ng-minlength="2">
+                </div>
+                <div class="text-center">
+                    <button ng-disable="editForm.labelText.$invalid && !editForm.labelText.$pristine" class="btn btn-default" ng-click="addLabel(data.label)">Add</button>
+                    <button ng-disable="editForm.labelText.$invalid && !editForm.labelText.$pristine" class="btn btn-default" ng-click="deleteLabel(data.label)">Delete</button>
+                </div>
+                <hr>
+                <div class="form-group" ng-class="{ 'has-error' : editForm.labelText.$invalid && !editForm.labelText.$pristine}">
+                    <h3>Priorities</h3>
+                    <p ng-show="data.PriorityNames.length <= 0">No priorities</p>
+                    <ul>
+                        <li ng-repeat='priority in data.PriorityNames'>
+                            {{priority.Name}}
+                        </li>
+                    </ul>
+                    <p ng-show="existingPriority != ''" class="help-block">{{existingPriority}}</p>
+                    <input name="priorityText" type="text" class="form-control" id="priorityText" ng-model="data.priority" ng-minlength="2">
+                </div>
+                 <div class="text-center">
+                    <button ng-disable="editForm.priorityText.$invalid && !editForm.priorityText.$pristine" class="btn btn-default" ng-click="addPriority(data.priority)">Add</button>
+                    <button ng-disable="editForm.priorityText.$invalid && !editForm.priorityText.$pristine" class="btn btn-default" ng-click="deletePriority(data.priority)">Delete</button>
+                </div>
+                <hr>
+                <div class="form-group" ng-class="{ 'has-error' : editForm.lead.$invalid && !editForm.lead.$pristine}">
+                    <label for="lead">Lead</label>
+                    <input ng-disabled="!isAdmin" name="lead" type="text" class="form-control" id="lead" ng-model="data.Lead.Username" ng-required="true">
+                    <p ng-show="editForm.lead.$dirty && editForm.lead.$invalid.required" class="help-block">Lead Required</p>
+                </div>
+                <div class="text-center">
+                    <input type="submit" ng-disabled="editForm.$invalid || editForm.$pristine" class="btn btn-default" ng-click="submit(data)" value="Save Changes">
+                    <input type="button" class="btn btn-default" value="Cancel" ng-click='cancel()'>
+                </div>
+            </form>
+        </div>
+    </div>    
+</div>

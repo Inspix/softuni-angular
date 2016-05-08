@@ -3,14 +3,18 @@ angular.module("issueTracker.issues",[])
         $routeProvider.when('/issue/:id',{
             templateUrl:'templates/issue.html',
             controller:'issueController'
-        })
+        });
     }])
     .controller("issueController",[
        '$scope',
        '$routeParams',
-       function($scope,$routeParams){
-           $scope.title = "Issue title";
-           $scope.issueId = $routeParams.id;
-           $scope.description = "Issue description";
+       'auth',
+       'appUser',
+       function($scope,$routeParams,auth,appUser){
+           auth.GetIssue($routeParams.id).then(function(result){
+               console.log(result);
+              $scope.issue = result.data;
+              $scope.canResolve = result.data.Status.Id != 1;
+           });
        } 
     ]);

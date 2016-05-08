@@ -16,7 +16,6 @@ angular.module("issueTracker.api", [
                 url: apiData.url + params.url,
                 data: params.data,
             };
-            
             return $http(req)
         }
         
@@ -42,7 +41,7 @@ angular.module("issueTracker.api", [
                 
                 return Execute(parameters);
             },
-            logout : function(success, failure){
+            logout : function(){
                 var parameters = {
                     method:'POST', 
                     url: 'api/Account/Logout', 
@@ -60,7 +59,7 @@ angular.module("issueTracker.api", [
                         'Authorization': appUser.authString
                     }
                 };
-                return Execute(parameters, success,failure);
+                return Execute(parameters);
             },
             getUsers: function(query){
                 var parameters = {
@@ -71,9 +70,9 @@ angular.module("issueTracker.api", [
                         'Authorization': appUser.authString
                     }
                 };
-                return Execute(parameters, success, failure);
+                return Execute(parameters);
             },
-            me : function(success, failure){
+            me : function(){
                 var parameters = {
                     method: 'GET',
                     url: 'Users/me',
@@ -81,9 +80,9 @@ angular.module("issueTracker.api", [
                         'Authorization': appUser.authString
                     }
                 };
-                return Execute(parameters, success, failure);
+                return Execute(parameters);
             },
-            makeAdmin: function(userId, success, failure){
+            makeAdmin: function(userId){
                 var parameters = {
                     method: 'PUT',
                     url: 'Users/makeAdmin',
@@ -94,7 +93,7 @@ angular.module("issueTracker.api", [
                         'Authorization': appUser.authString
                     }
                 };
-                return Execute(parameters, success, failure);
+                return Execute(parameters);
             },
             getLabels: function(params){
                 var parameters = {
@@ -105,20 +104,39 @@ angular.module("issueTracker.api", [
                         'Authorization': appUser.authString
                     }
                 };
-                return Execute(parameters, success, failure);
+                return Execute(parameters);
             },
-            getProjects : function(params, success, failure){
+            getProjects : function(params){
                 var parameters = {
                     method: 'GET',
-                    url: 'Projects/:id',
-                    data: params,
+                    url: 'Projects/' + params.id,
                     headers : {
                         'Authorization': appUser.authString
                     }
                 };
-                return Execute(parameters, success, failure);
+                return Execute(parameters);
             },
-            addProject : function(params, success, failure){
+            getAllProjects : function(){
+                var parameters = {
+                    method: 'GET',
+                    url: 'Projects/',
+                    headers : {
+                        'Authorization': appUser.authString
+                    }
+                };
+                return Execute(parameters);
+            },
+            getUserProjects : function(filter){
+                var parameters = {
+                    method: 'GET',
+                    url: 'Projects/' + filter,
+                    headers : {
+                        'Authorization': appUser.authString
+                    }
+                };
+                return Execute(parameters);
+            },
+            addProject : function(params){
                 var parameters = {
                     method : 'POST',
                     url: 'Projects',
@@ -129,18 +147,18 @@ angular.module("issueTracker.api", [
                 };
                 return Execute(params);
             },
-            editProject: function(params, success, failure){
+            editProject: function(params,id){
                 var parameters = {
                     method: 'PUT',
-                    url : 'Projects/:id',
+                    url : 'Projects/' + id,
                     data: params,
                     headers : {
                         'Authorization': appUser.authString
                     }
                 };
-                return Execute(parameters,success, failure);
+                return Execute(parameters);
             },
-            getProjectIssues: function(params, success, failure){
+            getProjectIssues: function(params){
                 var parameters = {
                     method: "GET",
                     url : 'Projects/:id/Issues',
@@ -151,18 +169,17 @@ angular.module("issueTracker.api", [
                 };
                 return Execute(parameters);
             },
-            getIssues : function(params, success, failure){
+            getIssues : function(id){
                 var parameters = {
                     method: 'GET',
-                    url: 'Issues/:id',
-                    data: params || {},
+                    url: 'Issues/'+ id,
                     headers : {
                         'Authorization' : appUser.authString
                     }
                 };
                 return Execute(parameters);
             },
-            getMyIssues: function(params, success, failure){
+            getMyIssues: function(params){
                 var parameters = {
                     method: 'GET',
                     url: 'Issues/me',
@@ -172,7 +189,7 @@ angular.module("issueTracker.api", [
                     }
                 }
             },
-            addIssue: function(params, success, failure){
+            addIssue: function(params){
                 var parameters = {
                     method: "POST",
                     url: 'Issues',
@@ -181,9 +198,9 @@ angular.module("issueTracker.api", [
                         'Authorization' : appUser.authString
                     }
                 };
-                return Execute(parameters, success,failure);
+                return Execute(parameters);
             },
-            editIssue: function(params, success, failure){
+            editIssue: function(params){
                 var parameters = {
                     method: 'PUT',
                     url: 'Issues',
@@ -194,7 +211,7 @@ angular.module("issueTracker.api", [
                 };
                 return Execute(parameters);
             },
-            changeIssueStatus: function(params, success, failure){
+            changeIssueStatus: function(params){
                 var parameters = {
                     method: 'PUT',
                     url: 'Issues/:id/changestatus',
@@ -216,7 +233,7 @@ angular.module("issueTracker.api", [
                 };
                 return Execute(parameters);
             },
-            addIssueComment: function(params, success, failure){
+            addIssueComment: function(params){
                 var parameters = {
                     method: "POST",
                     url: 'Issues/:id/comments',
