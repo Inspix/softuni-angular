@@ -56,12 +56,6 @@ angular.module('issueTracker.dashboard', [])
         }
         
         $scope.showUserInfo = false;
-
-        $scope.logOut = function() {
-            auth.Logout().then(function(response){
-                $location.path('#/');
-            });
-        }   
         
         $scope.user = appUser.userName;
         $scope.projects = projects.Projects;

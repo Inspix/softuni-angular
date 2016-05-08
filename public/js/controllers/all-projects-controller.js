@@ -46,13 +46,5 @@ angular.module('issueTracker.project.all',[])
             $scope.pageChanged = function() {
                 $scope.offset = $scope.currentPage * $scope.maxSize;
             };
-            
-            $scope.logOut = function() {
-                auth.Logout().then(function(response){
-                    $location.path('#/');
-            });
-        }      
-            
-           
         }
     ])
