@@ -19,7 +19,17 @@ angular.module('issueTracker',[
         logging : true,
         me : undefined
     }).config(['$routeProvider', function($routeProvider){
-        $routeProvider.otherwise({ redirectTo: '/'});
+        
+        $routeProvider
+            .when('/logout',{
+            resolve: {
+                authenticated : function ($location, auth){
+                    return auth.Logout().then(function(response){
+                        $location.path('#/');
+                    })
+                }
+            }})
+            .otherwise({ redirectTo: '/'});
     }])
     .run(['$cookies','appUser',function($cookies, appUser){
         var me = $cookies.getObject('me');
